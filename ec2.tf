@@ -71,7 +71,8 @@ resource "aws_vpc_security_group_egress_rule" "tidybase_compute_allow_only_priva
 resource "aws_launch_template" "tidybase_launch" {
   depends_on = [aws_efs_file_system.tidybase_efs]
   user_data = base64encode(templatefile(local.pocketbase_launch_script, {
-    efs_id = aws_efs_file_system.tidybase_efs.id
+    efs_id    = aws_efs_file_system.tidybase_efs.id
+    secret_id = var.tidybase_secret_name
   }))
 }
 
@@ -86,6 +87,7 @@ resource "aws_instance" "tidybase_compute" {
   key_name               = var.tidybase_compute_key_name
   vpc_security_group_ids = [aws_security_group.tidybase_compute_security_group.id]
   subnet_id              = aws_subnet.tidybase_compute_subnet.id
+  iam_instance_profile   = var.instance_profile
 
   launch_template {
     id = aws_launch_template.tidybase_launch.id

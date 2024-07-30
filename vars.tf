@@ -18,3 +18,24 @@ variable "tidybase_compute_key_name" {
   type    = string
   default = "pocketbase-ec2"
 }
+
+variable "tidybase_secret_name" {
+  type    = string
+  default = "test/tidybase"
+}
+
+variable "ADMIN_EMAIL" {
+  description = "pocketbase initial admin email"
+  type        = string
+}
+
+variable "ADMIN_PASSWORD" {
+  description = "pocketbase initial admin password"
+  type        = string
+  sensitive   = true
+}
+
+variable "instance_profile" {
+  type    = string
+  default = "LabInstanceProfile"
+}

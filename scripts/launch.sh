@@ -1,6 +1,7 @@
 #!/bin/bash
 # variables
 # efs_id
+# secret_id
 sudo su
 sudo yum install -y amazon-efs-utils
 mkdir /tidybase
@@ -12,7 +13,7 @@ wget https://github.com/pocketbase/pocketbase/releases/download/v0.22.18/pocketb
 unzip pocketbase_0.22.18_linux_amd64.zip
 chmod +x pocketbase
 nohup ./pocketbase serve --http="0.0.0.0:80" --dir="./data" > ./logs/pocketbase.log 2>&1 &
-SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id test/tidybase --query 'SecretString' | jq -r 'fromjson')
+SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id ${secret_id} --query 'SecretString' | jq -r 'fromjson')
 ADMIN_EMAIL=$(echo $SECRET_JSON | jq -r '.ADMIN_EMAIL')
 ADMIN_PASSWORD=$(echo $SECRET_JSON | jq -r '.ADMIN_PASSWORD')
 curl -X POST http://localhost:80/api/admins \
