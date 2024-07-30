@@ -1,14 +1,13 @@
 #!/bin/bash
 # variables
 # efs_id
-echo ${efs_id}
 sudo su
 sudo yum install -y amazon-efs-utils
 mkdir /tidybase
 cd /tidybase
 mkdir data
 mkdir logs
-# sudo mount -t efs -o tls ${efs_id}:/ data
+sudo mount -t efs -o tls ${efs_id}:/ data
 wget https://github.com/pocketbase/pocketbase/releases/download/v0.22.18/pocketbase_0.22.18_linux_amd64.zip
 unzip pocketbase_0.22.18_linux_amd64.zip
 chmod +x pocketbase
