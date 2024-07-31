@@ -68,11 +68,19 @@ resource "aws_vpc_security_group_egress_rule" "tidybase_compute_allow_only_priva
   ip_protocol       = "tcp"
 }
 
+resource "aws_ssm_parameter" "tidybase_cloudwatch_agent_config" {
+  description = "cloudwatch agent config for tidybase ec2 logs"
+  name        = "/tidybase/agent/config"
+  type        = "String"
+  value       = file("${path.root}/cloudwatch-agent-config.json")
+}
+
 resource "aws_launch_template" "tidybase_launch" {
-  depends_on = [aws_efs_file_system.tidybase_efs]
+  depends_on = [aws_efs_file_system.tidybase_efs, aws_ssm_parameter.tidybase_cloudwatch_agent_config]
   user_data = base64encode(templatefile(local.pocketbase_launch_script, {
-    efs_id    = aws_efs_file_system.tidybase_efs.id
-    secret_id = var.tidybase_secret_name
+    efs_id                      = aws_efs_file_system.tidybase_efs.id
+    secret_id                   = var.tidybase_secret_name
+    cloudwatch_agent_config_ssm = aws_ssm_parameter.tidybase_cloudwatch_agent_config.name
   }))
 }
 

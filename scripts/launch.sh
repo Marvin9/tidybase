@@ -2,12 +2,14 @@
 # variables
 # efs_id
 # secret_id
+# cloudwatch_agent_config_ssm
 sudo su
-sudo yum install -y amazon-efs-utils
+sudo yum install -y amazon-efs-utils amazon-cloudwatch-agent
 mkdir /tidybase
 cd /tidybase
 mkdir data
 mkdir logs
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c ssm:${cloudwatch_agent_config_ssm} -s
 sudo mount -t efs -o tls ${efs_id}:/ data
 wget https://github.com/pocketbase/pocketbase/releases/download/v0.22.18/pocketbase_0.22.18_linux_amd64.zip
 unzip pocketbase_0.22.18_linux_amd64.zip
