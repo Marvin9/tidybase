@@ -1,6 +1,7 @@
 resource "aws_subnet" "tidybase_compute_subnet" {
-  vpc_id     = aws_vpc.tidybase_network.id
-  cidr_block = "10.0.0.0/24"
+  vpc_id            = aws_vpc.tidybase_network.id
+  cidr_block        = "10.0.0.0/24"
+  availability_zone = "us-east-1a"
 
   tags = {
     Name = "tidybase-compute-public"
@@ -84,33 +85,31 @@ resource "aws_launch_template" "tidybase_launch" {
   }))
 }
 
-resource "aws_instance" "tidybase_compute" {
+resource "aws_launch_configuration" "tidybase" {
   depends_on = [
     aws_launch_template.tidybase_launch,
     aws_security_group.tidybase_compute_security_group,
     aws_subnet.tidybase_compute_subnet,
+    aws_efs_file_system.tidybase_efs,
+    aws_ssm_parameter.tidybase_cloudwatch_agent_config
   ]
-  ami                    = var.amazon_linux_2023_ami_id
-  instance_type          = "t2.micro"
-  key_name               = var.tidybase_compute_key_name
-  vpc_security_group_ids = [aws_security_group.tidybase_compute_security_group.id]
-  subnet_id              = aws_subnet.tidybase_compute_subnet.id
-  iam_instance_profile   = var.instance_profile
 
-  launch_template {
-    id = aws_launch_template.tidybase_launch.id
+  image_id             = var.amazon_linux_2023_ami_id
+  instance_type        = "t2.micro"
+  key_name             = var.tidybase_compute_key_name
+  iam_instance_profile = var.instance_profile
+
+  user_data_base64 = base64encode(templatefile(local.pocketbase_launch_script, {
+    efs_id                      = aws_efs_file_system.tidybase_efs.id
+    secret_id                   = var.tidybase_secret_name
+    cloudwatch_agent_config_ssm = aws_ssm_parameter.tidybase_cloudwatch_agent_config.name
+  }))
+
+  associate_public_ip_address = true
+
+  lifecycle {
+    create_before_destroy = true
   }
 
-  tags = {
-    Name = "tidybase"
-  }
-}
-
-resource "aws_eip" "tidybase_compute_eip" {
-  instance = aws_instance.tidybase_compute.id
-}
-
-output "instance_dns" {
-  depends_on = [aws_eip.tidybase_compute_eip]
-  value      = aws_eip.tidybase_compute_eip.public_dns
+  security_groups = [aws_security_group.tidybase_compute_security_group.id]
 }

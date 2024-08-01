@@ -27,7 +27,12 @@ resource "aws_route_table" "tidybase_route_table" {
   }
 }
 
-resource "aws_route_table_association" "tidybase_route_table_association" {
-  subnet_id      = aws_subnet.tidybase_compute_subnet.id
+resource "aws_route_table_association" "tidybase_lb_1_route_table" {
+  subnet_id      = aws_subnet.tidybase_lb_subnet_1.id
+  route_table_id = aws_route_table.tidybase_route_table.id
+}
+
+resource "aws_route_table_association" "tidybase_lb_2_route_table" {
+  subnet_id      = aws_subnet.tidybase_lb_subnet_2.id
   route_table_id = aws_route_table.tidybase_route_table.id
 }
