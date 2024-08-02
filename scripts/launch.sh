@@ -10,7 +10,8 @@ cd /tidybase
 mkdir data
 mkdir logs
 sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c ssm:${cloudwatch_agent_config_ssm} -s
-sudo mount -t efs -o tls ${efs_id}:/ data
+# sudo mount -t efs -o tls ${efs_id} /tidybase/data/
+sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport ${efs_dns}:/ /tidybase/data/
 wget https://github.com/pocketbase/pocketbase/releases/download/v0.22.18/pocketbase_0.22.18_linux_amd64.zip
 unzip pocketbase_0.22.18_linux_amd64.zip
 chmod +x pocketbase

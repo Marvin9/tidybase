@@ -20,8 +20,10 @@
         "totalcpu": false,
         "metrics_collection_interval": 10,
         "append_dimensions": {
-          "customized_dimension_key_1": "customized_dimension_value_1",
-          "customized_dimension_key_2": "customized_dimension_value_2"
+          "ImageId": "${aws:ImageId}",
+          "InstanceId": "${aws:InstanceId}",
+          "InstanceType": "${aws:InstanceType}",
+          "AutoScalingGroupName": "${aws:AutoScalingGroupName}"
         }
       },
       "disk": {
@@ -34,8 +36,10 @@
         "ignore_file_system_types": ["sysfs", "devtmpfs"],
         "metrics_collection_interval": 60,
         "append_dimensions": {
-          "customized_dimension_key_3": "customized_dimension_value_3",
-          "customized_dimension_key_4": "customized_dimension_value_4"
+          "ImageId": "${aws:ImageId}",
+          "InstanceId": "${aws:InstanceId}",
+          "InstanceType": "${aws:InstanceType}",
+          "AutoScalingGroupName": "${aws:AutoScalingGroupName}"
         }
       },
       "diskio": {
@@ -71,7 +75,8 @@
     "append_dimensions": {
       "ImageId": "${aws:ImageId}",
       "InstanceId": "${aws:InstanceId}",
-      "InstanceType": "${aws:InstanceType}"
+      "InstanceType": "${aws:InstanceType}",
+      "AutoScalingGroupName": "${aws:AutoScalingGroupName}"
     },
     "aggregation_dimensions": [
       ["ImageId"],

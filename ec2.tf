@@ -76,18 +76,8 @@ resource "aws_ssm_parameter" "tidybase_cloudwatch_agent_config" {
   value       = file("${path.root}/cloudwatch-agent-config.json")
 }
 
-resource "aws_launch_template" "tidybase_launch" {
-  depends_on = [aws_efs_file_system.tidybase_efs, aws_ssm_parameter.tidybase_cloudwatch_agent_config]
-  user_data = base64encode(templatefile(local.pocketbase_launch_script, {
-    efs_id                      = aws_efs_file_system.tidybase_efs.id
-    secret_id                   = var.tidybase_secret_name
-    cloudwatch_agent_config_ssm = aws_ssm_parameter.tidybase_cloudwatch_agent_config.name
-  }))
-}
-
 resource "aws_launch_configuration" "tidybase" {
   depends_on = [
-    aws_launch_template.tidybase_launch,
     aws_security_group.tidybase_compute_security_group,
     aws_subnet.tidybase_compute_subnet,
     aws_efs_file_system.tidybase_efs,
@@ -103,6 +93,7 @@ resource "aws_launch_configuration" "tidybase" {
     efs_id                      = aws_efs_file_system.tidybase_efs.id
     secret_id                   = var.tidybase_secret_name
     cloudwatch_agent_config_ssm = aws_ssm_parameter.tidybase_cloudwatch_agent_config.name
+    efs_dns                     = aws_efs_file_system.tidybase_efs.dns_name
   }))
 
   associate_public_ip_address = true
