@@ -93,13 +93,13 @@
           {
             "file_path": "/opt/aws/amazon-cloudwatch-agent/logs/amazon-cloudwatch-agent.log",
             "log_group_name": "/tidybase",
-            "log_stream_name": "tidybase-cloudwatch-agent.log",
+            "log_stream_name": "tidybase-cloudwatch-agent-${aws:InstanceId}.log",
             "timezone": "UTC"
           },
           {
             "file_path": "/tidybase/logs/pocketbase.log",
             "log_group_name": "/tidybase",
-            "log_stream_name": "pocketbase.log",
+            "log_stream_name": "pocketbase-${aws:InstanceId}.log",
             "timezone": "UTC"
           }
         ]

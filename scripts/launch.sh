@@ -15,22 +15,20 @@ sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,ret
 wget https://github.com/pocketbase/pocketbase/releases/download/v0.22.18/pocketbase_0.22.18_linux_amd64.zip
 unzip pocketbase_0.22.18_linux_amd64.zip
 chmod +x pocketbase
-nohup ./pocketbase serve --http="0.0.0.0:80" --dir="./data" > ./logs/pocketbase.log 2>&1 &
-SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id ${secret_id} --query 'SecretString' | jq -r 'fromjson')
-ADMIN_EMAIL=$(echo $SECRET_JSON | jq -r '.ADMIN_EMAIL')
-ADMIN_PASSWORD=$(echo $SECRET_JSON | jq -r '.ADMIN_PASSWORD')
-curl -X POST http://localhost:80/api/admins \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "'"$ADMIN_EMAIL"'",
-    "password": "'"$ADMIN_PASSWORD"'",
-    "passwordConfirm": "'"$ADMIN_PASSWORD"'"
-  }'
-# LOGIN=$(curl -X POST http://localhost:80/api/admins/auth-with-password \
-#   -H "Content-Type: application/json" \
-#   -d '{
-#     "identity": "'"$ADMIN_EMAIL"'",
-#     "password": "'"$ADMIN_PASSWORD"'"
-#   }')
 
-# TOKEN=$(echo $LOGIN | jq -r '.token')
+if [ -z "$(ls -A /tidybase/data)" ]; then
+    nohup ./pocketbase serve --http="0.0.0.0:80" --dir="./data" > ./logs/pocketbase.log 2>&1 &
+
+    SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id ${secret_id} --query 'SecretString' | jq -r 'fromjson')
+    ADMIN_EMAIL=$(echo $SECRET_JSON | jq -r '.ADMIN_EMAIL')
+    ADMIN_PASSWORD=$(echo $SECRET_JSON | jq -r '.ADMIN_PASSWORD')
+    curl -X POST http://localhost:80/api/admins \
+      -H "Content-Type: application/json" \
+      -d '{
+        "email": "'"$ADMIN_EMAIL"'",
+        "password": "'"$ADMIN_PASSWORD"'",
+        "passwordConfirm": "'"$ADMIN_PASSWORD"'"
+      }'
+else
+    nohup ./pocketbase serve --http="0.0.0.0:80" --dir="./data" --automigrate=false > ./logs/pocketbase.log 2>&1 &
+fi
