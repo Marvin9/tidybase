@@ -39,7 +39,7 @@ else
     nohup ./pocketbase serve --http="0.0.0.0:80" --dir="./data" --automigrate=false > ./logs/pocketbase.log 2>&1 &
 fi
 
-until curl --output /dev/null --silent --head --fail http://localhost; do
+until curl --output /dev/null --silent --head --fail http://localhost/api/health; do
     printf '.'
     sleep 5
 done
