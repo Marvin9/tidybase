@@ -22,13 +22,7 @@ if [ -z "$(ls -A /tidybase/data)" ]; then
     SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id ${secret_id} --query 'SecretString' | jq -r 'fromjson')
     ADMIN_EMAIL=$(echo $SECRET_JSON | jq -r '.ADMIN_EMAIL')
     ADMIN_PASSWORD=$(echo $SECRET_JSON | jq -r '.ADMIN_PASSWORD')
-    curl -X POST http://localhost:80/api/admins \
-      -H "Content-Type: application/json" \
-      -d '{
-        "email": "'"$ADMIN_EMAIL"'",
-        "password": "'"$ADMIN_PASSWORD"'",
-        "passwordConfirm": "'"$ADMIN_PASSWORD"'"
-      }'
+    ./pocketbase admin create $ADMIN_EMAIL $ADMIN_PASSWORD
 else
     nohup ./pocketbase serve --http="0.0.0.0:80" --dir="./data" --automigrate=false > ./logs/pocketbase.log 2>&1 &
 fi
