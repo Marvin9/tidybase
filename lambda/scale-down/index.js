@@ -115,7 +115,7 @@ const waitForHealthyInstances = async (asgName, targetGroupArn) => {
         instances.includes(description.Target.Id)
     );
 
-    return healthyInstances.length === instances.length;
+    return healthyInstances.length === 1;
   };
 
   // Wait for instances to become healthy
