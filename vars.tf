@@ -39,3 +39,8 @@ variable "instance_profile" {
   type    = string
   default = "LabInstanceProfile"
 }
+
+variable "lambda_role" {
+  type    = string
+  default = "arn:aws:iam::779371441497:role/LabRole"
+}

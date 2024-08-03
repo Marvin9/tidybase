@@ -31,11 +31,6 @@ resource "aws_lb_target_group" "tidybase_target_group" {
   }
 }
 
-resource "aws_autoscaling_attachment" "tidybase_small" {
-  autoscaling_group_name = aws_autoscaling_group.tidybase_small_asg.id
-  lb_target_group_arn    = aws_lb_target_group.tidybase_target_group.arn
-}
-
 output "lb_dns" {
   value = "http://${aws_lb.tidybase_lb.dns_name}"
 }

@@ -39,3 +39,6 @@ terraform.rc
 *.pem
 gitlab_token
 .env
+
+assets/*
+*.zip

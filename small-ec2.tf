@@ -26,6 +26,9 @@ resource "aws_autoscaling_group" "tidybase_small_asg" {
   vpc_zone_identifier = [
     aws_subnet.tidybase_compute_subnet.id
   ]
+  target_group_arns = [
+    aws_lb_target_group.tidybase_target_group.arn
+  ]
 
   tag {
     key                 = "Name"
