@@ -29,6 +29,8 @@ resource "aws_lb_target_group" "tidybase_target_group" {
     path    = "/api/health"
     port    = 80
   }
+
+  deregistration_delay = 10
 }
 
 output "lb_dns" {
