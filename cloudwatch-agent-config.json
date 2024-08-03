@@ -49,6 +49,12 @@
             "log_group_name": "/tidybase",
             "log_stream_name": "pocketbase-{instance_id}.log",
             "timezone": "UTC"
+          },
+          {
+            "file_path": "/var/log/cloud-init-output.log",
+            "log_group_name": "/tidybase",
+            "log_stream_name": "tidybase-init-{instance_id}.log",
+            "timezone": "UTC"
           }
         ]
       }

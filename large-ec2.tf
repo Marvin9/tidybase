@@ -18,7 +18,7 @@ resource "aws_launch_configuration" "tidybase_compute_large" {
 
 resource "aws_autoscaling_group" "tidybase_large_asg" {
   name                 = "tidybase-large-asg"
-  depends_on           = [aws_efs_file_system.tidybase_efs]
+  depends_on           = [aws_efs_file_system.tidybase_efs, aws_efs_mount_target.tidybase_efs_mount]
   min_size             = 0
   max_size             = 0
   desired_capacity     = 0
