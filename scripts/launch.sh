@@ -20,8 +20,8 @@ if [ -z "$(ls -A /tidybase/data)" ]; then
     SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id ${secret_id} --query 'SecretString' | jq -r 'fromjson')
     ADMIN_EMAIL=$(echo $SECRET_JSON | jq -r '.ADMIN_EMAIL')
     ADMIN_PASSWORD=$(echo $SECRET_JSON | jq -r '.ADMIN_PASSWORD')
-    ./pocketbase admin create $ADMIN_EMAIL $ADMIN_PASSWORD --dir="./data"
     nohup ./pocketbase serve --http="0.0.0.0:80" --dir="./data" > ./logs/pocketbase.log 2>&1 &
+    ./pocketbase admin create $ADMIN_EMAIL $ADMIN_PASSWORD --dir="./data"
 else
     nohup ./pocketbase serve --http="0.0.0.0:80" --dir="./data" --automigrate=false > ./logs/pocketbase.log 2>&1 &
 fi

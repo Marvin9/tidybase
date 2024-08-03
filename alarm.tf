@@ -5,7 +5,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_high_alarm" {
   metric_name         = "CPUActive"
   namespace           = "Compute/Tidybase"
   alarm_actions       = [aws_sns_topic.scale_up_topic.arn]
-  period              = 120
+  period              = 300
   statistic           = "Average"
   threshold           = 70
   dimensions = {
@@ -20,7 +20,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_low_alarm" {
   metric_name         = "CPUActive"
   namespace           = "Compute/Tidybase"
   alarm_actions       = [aws_sns_topic.scale_down_topic.arn]
-  period              = 120
+  period              = 300
   statistic           = "Average"
   threshold           = 20
   dimensions = {
