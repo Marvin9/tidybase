@@ -34,5 +34,5 @@ resource "aws_lb_target_group" "tidybase_target_group" {
 }
 
 output "lb_dns" {
-  value = "http://${aws_lb.tidybase_lb.dns_name}"
+  value = "http://${aws_lb.tidybase_lb.dns_name}/_"
 }
