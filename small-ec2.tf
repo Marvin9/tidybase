@@ -1,6 +1,6 @@
 resource "aws_launch_configuration" "tidybase_compute_small" {
   image_id                    = var.amazon_linux_2023_ami_id
-  instance_type               = "t2.micro"
+  instance_type               = var.light_workload_ec2
   associate_public_ip_address = true
   iam_instance_profile        = var.instance_profile
   user_data_base64 = base64encode(templatefile(local.pocketbase_launch_script, {

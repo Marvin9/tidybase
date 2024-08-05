@@ -55,3 +55,13 @@ variable "lambda_role" {
   type    = string
   default = "arn:aws:iam::779371441497:role/LabRole"
 }
+
+variable "light_workload_ec2" {
+  type    = string
+  default = "t2.micro"
+}
+
+variable "heavy_workload_ec2" {
+  type    = string
+  default = "t2.medium"
+}
