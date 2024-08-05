@@ -1,7 +1,7 @@
 resource "aws_subnet" "tidybase_efs_subnet" {
   vpc_id            = aws_vpc.tidybase_network.id
   cidr_block        = "10.0.1.0/24"
-  availability_zone = "us-east-1a"
+  availability_zone = var.availability_zone[0]
 
   tags = {
     Name = "tidybase-efs-private"
@@ -21,11 +21,21 @@ resource "aws_vpc_security_group_ingress_rule" "tidybase_efs_allow_only_public_s
 }
 
 resource "aws_efs_file_system" "tidybase_efs" {
-  creation_token = "tidybase"
-  encrypted      = true
+  creation_token         = "tidybase"
+  encrypted              = true
+  availability_zone_name = var.availability_zone[0]
 
   tags = {
     Name = "tidybase"
+  }
+}
+
+resource "aws_efs_replication_configuration" "tidybase_efs_replication" {
+  source_file_system_id = aws_efs_file_system.tidybase_efs.id
+
+  destination {
+    region                 = var.aws_region
+    availability_zone_name = var.availability_zone[1]
   }
 }
 

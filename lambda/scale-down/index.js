@@ -10,8 +10,8 @@ import {
   DescribeTargetHealthCommand,
 } from "@aws-sdk/client-elastic-load-balancing-v2";
 
-const autoScalingClient = new AutoScalingClient({ region: "us-east-1" });
-const elbv2Client = new ELBv2Client({ region: "us-east-1" });
+const autoScalingClient = new AutoScalingClient();
+const elbv2Client = new ELBv2Client();
 
 const BigAutoScalingName = process.env.BIG_AUTO_SCALING_NAME;
 const TinyAutoScalingName = process.env.TINY_AUTO_SCALING_NAME;

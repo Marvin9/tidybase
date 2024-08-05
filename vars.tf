@@ -4,6 +4,17 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
+variable "aws_efs_replicate_region" {
+  description = "EFS replication region"
+  type        = string
+  default     = "us-west-1"
+}
+
+variable "availability_zone" {
+  type    = list(string)
+  default = ["us-east-1a", "us-east-1b"]
+}
+
 variable "amazon_linux_2023_ami_id" {
   type    = string
   default = "ami-0427090fd1714168b"

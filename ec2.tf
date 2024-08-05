@@ -1,7 +1,7 @@
 resource "aws_subnet" "tidybase_compute_subnet" {
   vpc_id            = aws_vpc.tidybase_network.id
   cidr_block        = "10.0.0.0/24"
-  availability_zone = "us-east-1a"
+  availability_zone = var.availability_zone[0]
 
   tags = {
     Name = "tidybase-compute-public"

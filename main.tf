@@ -16,3 +16,8 @@ terraform {
 provider "aws" {
   region = var.aws_region
 }
+
+provider "aws" {
+  alias  = "efs_replication"
+  region = var.aws_efs_replicate_region
+}

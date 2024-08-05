@@ -44,7 +44,7 @@ resource "aws_route_table_association" "tidybase_lb_2_route_table" {
 
 resource "aws_subnet" "tidybase_lb_1" {
   vpc_id            = aws_vpc.tidybase_network.id
-  availability_zone = "us-east-1a"
+  availability_zone = var.availability_zone[0]
   cidr_block        = "10.0.2.0/24"
 
   tags = {
@@ -54,7 +54,7 @@ resource "aws_subnet" "tidybase_lb_1" {
 
 resource "aws_subnet" "tidybase_lb_2" {
   vpc_id            = aws_vpc.tidybase_network.id
-  availability_zone = "us-east-1b"
+  availability_zone = var.availability_zone[1]
   cidr_block        = "10.0.3.0/24"
 
   tags = {
