@@ -10,7 +10,7 @@ resource "aws_launch_configuration" "tidybase_compute_large" {
     efs_dns                     = aws_efs_file_system.tidybase_efs.dns_name
   }))
   key_name        = var.tidybase_compute_key_name
-  security_groups = [aws_security_group.tidybase_compute_security_group.id]
+  security_groups = [aws_security_group.tidybase_compute_security_group.id, aws_secretsmanager_secret.tidybase_secret]
   lifecycle {
     create_before_destroy = true
   }
