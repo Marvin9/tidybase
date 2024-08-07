@@ -55,10 +55,11 @@ resource "aws_vpc_security_group_ingress_rule" "tidybase_compute_allow_all_https
 
 resource "aws_vpc_security_group_egress_rule" "tidybase_compute_allow_all_https_egress" {
   security_group_id = aws_security_group.tidybase_compute_security_group.id
-  cidr_ipv4         = aws_vpc.tidybase_network.cidr_block
-  from_port         = 443
-  to_port           = 443
-  ip_protocol       = "tcp"
+  # let ec2 download stuff from internet
+  cidr_ipv4   = "0.0.0.0/0"
+  from_port   = 443
+  to_port     = 443
+  ip_protocol = "tcp"
 }
 
 resource "aws_vpc_security_group_egress_rule" "tidybase_compute_allow_only_private_subnet_nfs_egress" {
