@@ -32,7 +32,7 @@ variable "tidybase_compute_key_name" {
 
 variable "tidybase_secret_name" {
   type    = string
-  default = "prod/tidybase"
+  default = "test/tidybase"
 }
 
 variable "ADMIN_EMAIL" {
